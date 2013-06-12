@@ -1,17 +1,13 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
-DROP SCHEMA IF EXISTS `ban` ;
-CREATE SCHEMA IF NOT EXISTS `ban` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `ban` ;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 -- -----------------------------------------------------
--- Table `ban`.`author`
+-- Table `fban`.`author`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`author` ;
+DROP TABLE IF EXISTS `fban`.`author` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`author` (
+CREATE  TABLE IF NOT EXISTS `fban`.`author` (
   `idauthor` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `created` TIMESTAMP NOT NULL ,
   `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
@@ -23,11 +19,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`journal`
+-- Table `fban`.`journal`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`journal` ;
+DROP TABLE IF EXISTS `fban`.`journal` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`journal` (
+CREATE  TABLE IF NOT EXISTS `fban`.`journal` (
   `idjournal` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `created` TIMESTAMP NOT NULL ,
   `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
@@ -37,11 +33,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`conference`
+-- Table `fban`.`conference`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`conference` ;
+DROP TABLE IF EXISTS `fban`.`conference` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`conference` (
+CREATE  TABLE IF NOT EXISTS `fban`.`conference` (
   `idconference` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `created` TIMESTAMP NOT NULL ,
   `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
@@ -52,11 +48,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`publisher`
+-- Table `fban`.`publisher`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`publisher` ;
+DROP TABLE IF EXISTS `fban`.`publisher` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`publisher` (
+CREATE  TABLE IF NOT EXISTS `fban`.`publisher` (
   `idpublisher` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `created` TIMESTAMP NOT NULL ,
   `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
@@ -67,11 +63,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`paper`
+-- Table `fban`.`paper`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`paper` ;
+DROP TABLE IF EXISTS `fban`.`paper` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`paper` (
+CREATE  TABLE IF NOT EXISTS `fban`.`paper` (
   `idpaper` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `created` TIMESTAMP NOT NULL ,
   `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
@@ -97,28 +93,28 @@ CREATE  TABLE IF NOT EXISTS `ban`.`paper` (
   INDEX `paper-journal_idx` (`journal` ASC) ,
   CONSTRAINT `paper-journal`
     FOREIGN KEY (`journal` )
-    REFERENCES `ban`.`journal` (`idjournal` )
+    REFERENCES `fban`.`journal` (`idjournal` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paper-conference`
     FOREIGN KEY (`conference` )
-    REFERENCES `ban`.`conference` (`idconference` )
+    REFERENCES `fban`.`conference` (`idconference` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `paper-publisher`
     FOREIGN KEY (`publisher` )
-    REFERENCES `ban`.`publisher` (`idpublisher` )
+    REFERENCES `fban`.`publisher` (`idpublisher` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`authors-papers`
+-- Table `fban`.`authors-papers`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`authors-papers` ;
+DROP TABLE IF EXISTS `fban`.`authors-papers` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`authors-papers` (
+CREATE  TABLE IF NOT EXISTS `fban`.`authors-papers` (
   `author` INT UNSIGNED NOT NULL ,
   `paper` INT UNSIGNED NOT NULL ,
   `created` TIMESTAMP NOT NULL ,
@@ -128,23 +124,23 @@ CREATE  TABLE IF NOT EXISTS `ban`.`authors-papers` (
   INDEX `paper_idx` (`paper` ASC) ,
   CONSTRAINT `paper-author`
     FOREIGN KEY (`author` )
-    REFERENCES `ban`.`author` (`idauthor` )
+    REFERENCES `fban`.`author` (`idauthor` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `author-paper`
     FOREIGN KEY (`paper` )
-    REFERENCES `ban`.`paper` (`idpaper` )
+    REFERENCES `fban`.`paper` (`idpaper` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`citations`
+-- Table `fban`.`citations`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`citations` ;
+DROP TABLE IF EXISTS `fban`.`citations` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`citations` (
+CREATE  TABLE IF NOT EXISTS `fban`.`citations` (
   `citer` INT UNSIGNED NOT NULL ,
   `citee` INT UNSIGNED NOT NULL ,
   `created` TIMESTAMP NOT NULL ,
@@ -152,23 +148,23 @@ CREATE  TABLE IF NOT EXISTS `ban`.`citations` (
   PRIMARY KEY (`citer`, `citee`) ,
   CONSTRAINT `citer-paper`
     FOREIGN KEY ()
-    REFERENCES `ban`.`paper` ()
+    REFERENCES `fban`.`paper` ()
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `citee-paper`
     FOREIGN KEY (`citer` , `citee` )
-    REFERENCES `ban`.`paper` (`idpaper` , `idpaper` )
+    REFERENCES `fban`.`paper` (`idpaper` , `idpaper` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`keyword`
+-- Table `fban`.`keyword`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`keyword` ;
+DROP TABLE IF EXISTS `fban`.`keyword` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`keyword` (
+CREATE  TABLE IF NOT EXISTS `fban`.`keyword` (
   `idkeyword` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `created` TIMESTAMP NOT NULL ,
   `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
@@ -178,11 +174,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ban`.`keywords-papers`
+-- Table `fban`.`keywords-papers`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ban`.`keywords-papers` ;
+DROP TABLE IF EXISTS `fban`.`keywords-papers` ;
 
-CREATE  TABLE IF NOT EXISTS `ban`.`keywords-papers` (
+CREATE  TABLE IF NOT EXISTS `fban`.`keywords-papers` (
   `keyword` INT UNSIGNED NOT NULL ,
   `paper` INT UNSIGNED NOT NULL ,
   `created` TIMESTAMP NOT NULL ,
@@ -192,17 +188,16 @@ CREATE  TABLE IF NOT EXISTS `ban`.`keywords-papers` (
   INDEX `keyword-paper_idx` (`paper` ASC) ,
   CONSTRAINT `paper-keyword`
     FOREIGN KEY (`keyword` )
-    REFERENCES `ban`.`keyword` (`idkeyword` )
+    REFERENCES `fban`.`keyword` (`idkeyword` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `keyword-paper`
     FOREIGN KEY (`paper` )
-    REFERENCES `ban`.`paper` (`idpaper` )
+    REFERENCES `fban`.`paper` (`idpaper` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `ban` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
